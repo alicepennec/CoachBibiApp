@@ -73,7 +73,7 @@ export function SettingsForm() {
                         Apparence
                     </CardTitle>
                     <CardDescription>
-                        Personnalisez l'apparence de l'application.
+                        Personnalisez l&apos;apparence de l&apos;application.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
