@@ -18,9 +18,9 @@ import { useAuth } from "@/hooks/use-auth"
 
 const profileSchema = z.object({
     full_name: z.string().min(2, "Le nom est trop court"),
-    age: z.string().transform((val) => parseInt(val)).refine((val) => !isNaN(val) && val > 0 && val < 120, { message: "Âge invalide" }).optional(),
-    height_cm: z.string().transform((val) => parseInt(val)).refine((val) => !isNaN(val) && val > 0 && val < 300, { message: "Taille invalide" }).optional(),
-    goal_weight: z.string().transform((val) => parseFloat(val)).refine((val) => !isNaN(val) && val > 0, { message: "Poids invalide" }).optional(),
+    age: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0 && Number(val) < 120), { message: "Âge invalide" }).optional(),
+    height_cm: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0 && Number(val) < 300), { message: "Taille invalide" }).optional(),
+    goal_weight: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0), { message: "Poids invalide" }).optional(),
     dietary_preferences: z.string().optional(),
 })
 
@@ -34,9 +34,9 @@ export function ProfileForm() {
         resolver: zodResolver(profileSchema),
         defaultValues: {
             full_name: "",
-            age: undefined,
-            height_cm: undefined,
-            goal_weight: undefined,
+            age: "",
+            height_cm: "",
+            goal_weight: "",
             dietary_preferences: "none",
         },
     })
@@ -54,9 +54,9 @@ export function ProfileForm() {
             if (data) {
                 form.reset({
                     full_name: data.full_name || "",
-                    age: data.age?.toString(),
-                    height_cm: data.height_cm?.toString(),
-                    goal_weight: data.goal_weight?.toString(),
+                    age: data.age?.toString() || "",
+                    height_cm: data.height_cm?.toString() || "",
+                    goal_weight: data.goal_weight?.toString() || "",
                     dietary_preferences: data.dietary_preferences || "none",
                 })
             }
@@ -75,9 +75,9 @@ export function ProfileForm() {
                 .from("profiles")
                 .update({
                     full_name: values.full_name,
-                    age: values.age,
-                    height_cm: values.height_cm,
-                    goal_weight: values.goal_weight,
+                    age: values.age ? parseInt(values.age) : null,
+                    height_cm: values.height_cm ? parseInt(values.height_cm) : null,
+                    goal_weight: values.goal_weight ? parseFloat(values.goal_weight) : null,
                     dietary_preferences: values.dietary_preferences,
                     updated_at: new Date().toISOString(),
                 })
