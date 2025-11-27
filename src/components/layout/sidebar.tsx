@@ -10,9 +10,11 @@ import {
     Trophy,
     User,
     Settings,
-    ShieldCheck
+    ShieldCheck,
+    Lock
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const routes = [
     {
@@ -44,18 +46,6 @@ const routes = [
         icon: Trophy,
         href: "/goals",
         color: "text-orange-700",
-    },
-    {
-        label: "Profil",
-        icon: User,
-        href: "/profile",
-        color: "text-gray-500",
-    },
-    {
-        label: "Paramètres",
-        icon: Settings,
-        href: "/settings",
-        color: "text-gray-500",
     },
 ]
 
@@ -90,6 +80,28 @@ export function Sidebar() {
                         </Link>
                     ))}
                 </div>
+            </div>
+            <div className="px-3 py-2">
+                <nav className="space-y-1">
+                    <Link href="/profile">
+                        <Button variant="ghost" className="w-full justify-start">
+                            <User className="mr-2 h-4 w-4" />
+                            Profil
+                        </Button>
+                    </Link>
+                    <Link href="/settings">
+                        <Button variant="ghost" className="w-full justify-start">
+                            <Settings className="mr-2 h-4 w-4" />
+                            Paramètres
+                        </Button>
+                    </Link>
+                    <Link href="/coach">
+                        <Button variant="ghost" className="w-full justify-start text-amber-600 hover:text-amber-700 hover:bg-amber-50">
+                            <Lock className="mr-2 h-4 w-4" />
+                            Espace Coach
+                        </Button>
+                    </Link>
+                </nav>
             </div>
         </div>
     )
