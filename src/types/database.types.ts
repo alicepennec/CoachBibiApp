@@ -252,6 +252,7 @@ export interface Database {
                     category: string
                     description: string | null
                     prep_time_minutes: number | null
+                    cook_time_minutes: number | null
                     servings: number | null
                     difficulty: string | null
                     ingredients: Json
@@ -275,6 +276,7 @@ export interface Database {
                     category: string
                     description?: string | null
                     prep_time_minutes?: number | null
+                    cook_time_minutes?: number | null
                     servings?: number | null
                     difficulty?: string | null
                     ingredients: Json
@@ -298,6 +300,7 @@ export interface Database {
                     category?: string
                     description?: string | null
                     prep_time_minutes?: number | null
+                    cook_time_minutes?: number | null
                     servings?: number | null
                     difficulty?: string | null
                     ingredients?: Json

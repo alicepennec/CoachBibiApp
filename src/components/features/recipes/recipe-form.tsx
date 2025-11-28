@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Loader2, Plus, Trash2, Save } from "lucide-react"
@@ -20,13 +20,13 @@ const recipeSchema = z.object({
     title: z.string().min(3, "Titre trop court"),
     description: z.string().min(10, "Description trop courte"),
     category: z.string(),
-    prep_time_minutes: z.string().transform(v => parseInt(v)),
-    cook_time_minutes: z.string().transform(v => parseInt(v)),
-    servings: z.string().transform(v => parseInt(v)),
-    calories: z.string().transform(v => parseInt(v)),
-    protein_g: z.string().transform(v => parseInt(v)),
-    carbs_g: z.string().transform(v => parseInt(v)),
-    fat_g: z.string().transform(v => parseInt(v)),
+    prep_time_minutes: z.coerce.number().min(0, "Doit être positif"),
+    cook_time_minutes: z.coerce.number().min(0, "Doit être positif"),
+    servings: z.coerce.number().min(1, "Au moins 1 portion"),
+    calories: z.coerce.number().min(0, "Doit être positif"),
+    protein_g: z.coerce.number().min(0, "Doit être positif"),
+    carbs_g: z.coerce.number().min(0, "Doit être positif"),
+    fat_g: z.coerce.number().min(0, "Doit être positif"),
     image_url: z.string().url().optional().or(z.literal("")),
     is_vegetarian: z.boolean().default(false),
     is_vegan: z.boolean().default(false),
@@ -42,8 +42,10 @@ const recipeSchema = z.object({
     }))
 })
 
+import { Database } from "@/types/database.types"
+
 interface RecipeFormProps {
-    recipe?: any
+    recipe?: Database['public']['Tables']['recipes']['Row']
     onSaved: () => void
     onCancel: () => void
 }
@@ -54,25 +56,25 @@ export function RecipeForm({ recipe, onSaved, onCancel }: RecipeFormProps) {
     const [submitting, setSubmitting] = useState(false)
 
     const form = useForm<z.infer<typeof recipeSchema>>({
-        resolver: zodResolver(recipeSchema),
+        resolver: zodResolver(recipeSchema) as Resolver<z.infer<typeof recipeSchema>>,
         defaultValues: {
             title: recipe?.title || "",
             description: recipe?.description || "",
             category: recipe?.category || "dejeuner",
-            prep_time_minutes: recipe?.prep_time_minutes?.toString() || "15",
-            cook_time_minutes: recipe?.cook_time_minutes?.toString() || "15",
-            servings: recipe?.servings?.toString() || "2",
-            calories: recipe?.calories?.toString() || "400",
-            protein_g: recipe?.protein_g?.toString() || "20",
-            carbs_g: recipe?.carbs_g?.toString() || "30",
-            fat_g: recipe?.fat_g?.toString() || "15",
+            prep_time_minutes: recipe?.prep_time_minutes ?? 15,
+            cook_time_minutes: recipe?.cook_time_minutes ?? 15,
+            servings: recipe?.servings ?? 2,
+            calories: recipe?.calories ?? 400,
+            protein_g: recipe?.protein_g ?? 20,
+            carbs_g: recipe?.carbs_g ?? 30,
+            fat_g: recipe?.fat_g ?? 15,
             image_url: recipe?.image_url || "",
             is_vegetarian: recipe?.is_vegetarian || false,
             is_vegan: recipe?.is_vegan || false,
             is_gluten_free: recipe?.is_gluten_free || false,
             is_quick: recipe?.is_quick || false,
-            ingredients: recipe?.ingredients || [{ name: "", quantity: "", unit: "" }],
-            steps: recipe?.steps?.map((s: string) => ({ description: s })) || [{ description: "" }]
+            ingredients: (recipe?.ingredients as Array<{ name: string, quantity: string, unit?: string }>) || [{ name: "", quantity: "", unit: "" }],
+            steps: (recipe?.steps as Array<string>)?.map((s: string) => ({ description: s })) || [{ description: "" }]
         }
     })
 
@@ -92,7 +94,22 @@ export function RecipeForm({ recipe, onSaved, onCancel }: RecipeFormProps) {
 
         try {
             const recipeData = {
-                ...values,
+                title: values.title,
+                description: values.description,
+                category: values.category,
+                prep_time_minutes: values.prep_time_minutes,
+                cook_time_minutes: values.cook_time_minutes,
+                servings: values.servings,
+                calories: values.calories,
+                protein_g: values.protein_g,
+                carbs_g: values.carbs_g,
+                fat_g: values.fat_g,
+                image_url: values.image_url,
+                is_vegetarian: values.is_vegetarian,
+                is_vegan: values.is_vegan,
+                is_gluten_free: values.is_gluten_free,
+                is_quick: values.is_quick,
+                ingredients: values.ingredients,
                 steps: values.steps.map(s => s.description), // Flatten steps
                 author_id: user.id,
                 is_active: true
