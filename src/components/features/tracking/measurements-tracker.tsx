@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import { toast } from "sonner"
 import { Trash2, Ruler } from "lucide-react"
-import { useForm } from "react-hook-form"
+import { useForm, Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -33,7 +33,7 @@ export function MeasurementsTracker() {
     const [firstMeasurement, setFirstMeasurement] = useState<any>(null)
 
     const form = useForm<z.infer<typeof measurementsSchema>>({
-        resolver: zodResolver(measurementsSchema),
+        resolver: zodResolver(measurementsSchema) as unknown as Resolver<z.infer<typeof measurementsSchema>>,
         defaultValues: {
             date: format(new Date(), "yyyy-MM-dd"),
             chest_cm: 0,
