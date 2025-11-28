@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import { toast } from "sonner"
 import { Trash2, Moon, Star } from "lucide-react"
-import { useForm } from "react-hook-form"
+import { useForm, Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -33,7 +33,7 @@ export function SleepTracker() {
     const [loading, setLoading] = useState(true)
 
     const form = useForm<z.infer<typeof sleepSchema>>({
-        resolver: zodResolver(sleepSchema),
+        resolver: zodResolver(sleepSchema) as unknown as Resolver<z.infer<typeof sleepSchema>>,
         defaultValues: {
             date: format(new Date(), "yyyy-MM-dd"),
             hours_slept: 7,
