@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import { toast } from "sonner"
 import { Plus, Trash2, TrendingDown, TrendingUp, Minus } from "lucide-react"
-import { useForm } from "react-hook-form"
+import { useForm, Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -36,7 +36,7 @@ export function WeightTracker() {
     const [goalWeight, setGoalWeight] = useState<number | null>(null)
 
     const form = useForm<z.infer<typeof weightSchema>>({
-        resolver: zodResolver(weightSchema),
+        resolver: zodResolver(weightSchema) as unknown as Resolver<z.infer<typeof weightSchema>>,
         defaultValues: {
             date: format(new Date(), "yyyy-MM-dd"),
             weight: 0, // Will be handled as string input
