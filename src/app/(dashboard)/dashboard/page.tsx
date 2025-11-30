@@ -17,8 +17,8 @@ export default async function DashboardPage() {
     return (
         <div className="space-y-8">
             <div className="flex flex-col space-y-2">
-                <h1 className="text-3xl font-bold tracking-tight">Bon retour, {userName} !</h1>
-                <p className="text-muted-foreground">Prête à conquérir votre journée ?</p>
+                <h1 className="text-3xl font-bold tracking-tight">Salut {userName} !</h1>
+                <p className="text-muted-foreground">Prête à conquérir ta journée ?</p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

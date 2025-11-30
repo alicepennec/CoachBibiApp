@@ -30,9 +30,9 @@ export default function ProfilePage() {
                     <SettingsForm />
                 </TabsContent>
 
-                <TabsContent value="subscription" className="space-y-4">
+                {/* <TabsContent value="subscription" className="space-y-4">
                     <SubscriptionCard />
-                </TabsContent>
+                </TabsContent> */}
             </Tabs>
         </div>
     )
