@@ -6,6 +6,11 @@ export function createClient() {
 
     return createBrowserClient(
         supabaseUrl,
-        supabaseKey
+        supabaseKey,
+        {
+            db: {
+                schema: 'api',
+            },
+        }
     )
 }

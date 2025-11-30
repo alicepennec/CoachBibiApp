@@ -10,6 +10,9 @@ export async function createClient() {
         supabaseUrl,
         supabaseKey,
         {
+            db: {
+                schema: 'api',
+            },
             cookies: {
                 getAll() {
                     return cookieStore.getAll()
