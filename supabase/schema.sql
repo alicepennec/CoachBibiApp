@@ -190,7 +190,20 @@ ALTER TABLE coach_notes ENABLE ROW LEVEL SECURITY;
 -- Profiles
 CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Coaches can view client profiles" ON profiles FOR SELECT USING ((SELECT role FROM profiles WHERE id = auth.uid()) = 'coach');
+
+-- Secure function to check role without recursion
+CREATE OR REPLACE FUNCTION api.get_my_role()
+RETURNS text
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = api
+AS $$
+BEGIN
+  RETURN (SELECT role FROM api.profiles WHERE id = auth.uid());
+END;
+$$;
+
+CREATE POLICY "Coaches can view client profiles" ON profiles FOR SELECT USING (api.get_my_role() = 'coach');
 
 -- Weight Entries
 CREATE POLICY "Users can view own weight" ON weight_entries FOR SELECT USING (auth.uid() = user_id);
