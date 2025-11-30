@@ -19,7 +19,7 @@ export default function ProfilePage() {
                 <TabsList>
                     <TabsTrigger value="profile">Profil</TabsTrigger>
                     <TabsTrigger value="settings">Paramètres</TabsTrigger>
-                    <TabsTrigger value="subscription">Abonnement</TabsTrigger>
+                    {/* <TabsTrigger value="subscription">Abonnement</TabsTrigger> */}
                 </TabsList>
 
                 <TabsContent value="profile" className="space-y-4">
