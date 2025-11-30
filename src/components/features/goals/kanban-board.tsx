@@ -42,6 +42,8 @@ export function KanbanBoard() {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [editingGoal, setEditingGoal] = useState<any | null>(null)
 
+    const [activeGoal, setActiveGoal] = useState<any | null>(null)
+
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -66,6 +68,7 @@ export function KanbanBoard() {
 
     const handleDragStart = (event: DragStartEvent) => {
         setActiveId(event.active.id as string)
+        setActiveGoal(event.active.data.current)
     }
 
     const handleDragOver = (event: DragOverEvent) => {
@@ -89,8 +92,10 @@ export function KanbanBoard() {
                 const overIndex = goals.findIndex((t) => t.id === overId)
 
                 if (goals[activeIndex].status !== goals[overIndex].status) {
-                    goals[activeIndex].status = goals[overIndex].status
-                    return arrayMove(goals, activeIndex, overIndex - 1)
+                    // Create a new array and new object to avoid mutation
+                    const newGoals = [...goals]
+                    newGoals[activeIndex] = { ...newGoals[activeIndex], status: newGoals[overIndex].status }
+                    return arrayMove(newGoals, activeIndex, overIndex - 1)
                 }
 
                 return arrayMove(goals, activeIndex, overIndex)
@@ -103,21 +108,24 @@ export function KanbanBoard() {
         if (isActiveTask && isOverColumn) {
             setGoals((goals) => {
                 const activeIndex = goals.findIndex((t) => t.id === activeId)
-                goals[activeIndex].status = overId as Status
-                return arrayMove(goals, activeIndex, activeIndex)
+                // Create a new array and new object to avoid mutation
+                const newGoals = [...goals]
+                newGoals[activeIndex] = { ...newGoals[activeIndex], status: overId as Status }
+                return arrayMove(newGoals, activeIndex, activeIndex)
             })
         }
     }
 
     const handleDragEnd = async (event: DragEndEvent) => {
         setActiveId(null)
+        setActiveGoal(null)
         const { active, over } = event
         if (!over) return
 
         const activeId = active.id as string
         const overId = over.id as string
 
-        const activeGoal = goals.find((g) => g.id === activeId)
+        // Use the stored initial goal state to check for changes
         if (!activeGoal) return
 
         let newStatus = activeGoal.status
