@@ -17,7 +17,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useAuth } from "@/hooks/use-auth"
 
 const profileSchema = z.object({
-    full_name: z.string().min(2, "Le nom est trop court"),
+    name: z.string().min(2, "Le nom est trop court"),
     age: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0 && Number(val) < 120), { message: "Âge invalide" }).optional(),
     height_cm: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0 && Number(val) < 300), { message: "Taille invalide" }).optional(),
     goal_weight: z.string().refine((val) => !val || (!isNaN(Number(val)) && Number(val) > 0), { message: "Poids invalide" }).optional(),
@@ -33,7 +33,7 @@ export function ProfileForm() {
     const form = useForm<z.infer<typeof profileSchema>>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
-            full_name: "",
+            name: "",
             age: "",
             height_cm: "",
             goal_weight: "",
@@ -53,7 +53,7 @@ export function ProfileForm() {
 
             if (data) {
                 form.reset({
-                    full_name: data.full_name || "",
+                    name: data.name || "",
                     age: data.age?.toString() || "",
                     height_cm: data.height_cm?.toString() || "",
                     goal_weight: data.goal_weight?.toString() || "",
@@ -74,7 +74,7 @@ export function ProfileForm() {
             const { error } = await supabase
                 .from("profiles")
                 .update({
-                    full_name: values.full_name,
+                    name: values.name,
                     age: values.age ? parseInt(values.age) : null,
                     height_cm: values.height_cm ? parseInt(values.height_cm) : null,
                     goal_weight: values.goal_weight ? parseFloat(values.goal_weight) : null,
@@ -122,10 +122,10 @@ export function ProfileForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
-                            name="full_name"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Nom complet</FormLabel>
+                                    <FormLabel>Nom</FormLabel>
                                     <FormControl>
                                         <Input placeholder="Votre nom" {...field} />
                                     </FormControl>
