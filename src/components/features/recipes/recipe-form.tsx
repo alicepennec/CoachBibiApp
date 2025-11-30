@@ -45,7 +45,7 @@ const recipeSchema = z.object({
 import { Database } from "@/types/database.types"
 
 interface RecipeFormProps {
-    recipe?: Database['public']['Tables']['recipes']['Row']
+    recipe?: Database['api']['Tables']['recipes']['Row']
     onSaved: () => void
     onCancel: () => void
 }
