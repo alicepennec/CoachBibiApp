@@ -111,7 +111,7 @@ export function RecipeForm({ recipe, onSaved, onCancel }: RecipeFormProps) {
                 is_quick: values.is_quick,
                 ingredients: values.ingredients,
                 steps: values.steps.map(s => s.description), // Flatten steps
-                author_id: user.id,
+                created_by_coach_id: user.id,
                 is_active: true
             }
 
