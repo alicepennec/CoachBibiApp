@@ -45,7 +45,7 @@ export function MoodTracker() {
     })
 
     const fetchHistory = async () => {
-        if (!user) return
+        if (!user?.id) return
         const { data } = await supabase
             .from("mood_logs")
             .select("*")
@@ -62,7 +62,7 @@ export function MoodTracker() {
     }, [user])
 
     async function onSubmit(values: z.infer<typeof moodSchema>) {
-        if (!user) return
+        if (!user?.id) return
         setSubmitting(true)
 
         const today = format(new Date(), "yyyy-MM-dd")

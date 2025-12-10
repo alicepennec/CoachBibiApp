@@ -22,7 +22,7 @@ export function DailyChecklist() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!user) return
+        if (!user?.id) return
 
         const fetchChecklist = async () => {
             const today = format(new Date(), "yyyy-MM-dd")
@@ -47,7 +47,7 @@ export function DailyChecklist() {
     }, [user])
 
     const handleCheck = async (key: keyof typeof checklist, checked: boolean) => {
-        if (!user) return
+        if (!user?.id) return
 
         // Optimistic update
         setChecklist((prev) => ({ ...prev, [key]: checked }))

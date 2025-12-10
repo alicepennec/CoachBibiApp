@@ -43,7 +43,7 @@ export function SleepTracker() {
     })
 
     const fetchData = async () => {
-        if (!user) return
+        if (!user?.id) return
 
         const { data } = await supabase
             .from("sleep_logs")
@@ -61,7 +61,7 @@ export function SleepTracker() {
     }, [user])
 
     async function onSubmit(values: z.infer<typeof sleepSchema>) {
-        if (!user) return
+        if (!user?.id) return
 
         try {
             const { error } = await supabase

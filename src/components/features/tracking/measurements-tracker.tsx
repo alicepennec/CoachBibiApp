@@ -44,7 +44,7 @@ export function MeasurementsTracker() {
     })
 
     const fetchData = async () => {
-        if (!user) return
+        if (!user?.id) return
 
         const { data } = await supabase
             .from("measurements")
@@ -74,7 +74,7 @@ export function MeasurementsTracker() {
     }, [user])
 
     async function onSubmit(values: z.infer<typeof measurementsSchema>) {
-        if (!user) return
+        if (!user?.id) return
 
         try {
             const { error } = await supabase

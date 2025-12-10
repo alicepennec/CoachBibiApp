@@ -17,7 +17,7 @@ export function WeeklyMoodChart() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if (!user) return
+        if (!user?.id) return
 
         const fetchMoods = async () => {
             const today = new Date()
