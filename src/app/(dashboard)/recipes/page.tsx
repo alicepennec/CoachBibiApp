@@ -59,6 +59,18 @@ export default function RecipesPage() {
         return matchesSearch && matchesCategory && matchesDiet
     })
 
+    const handleToggleFavorite = (recipeId: string) => {
+        setFavorites(prev => {
+            const next = new Set(prev)
+            if (next.has(recipeId)) {
+                next.delete(recipeId)
+            } else {
+                next.add(recipeId)
+            }
+            return next
+        })
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col space-y-2">
@@ -147,6 +159,7 @@ export default function RecipesPage() {
                             key={recipe.id}
                             recipe={recipe}
                             isFavorite={favorites.has(recipe.id)}
+                            onToggleFavorite={() => handleToggleFavorite(recipe.id)}
                         />
                     ))}
                 </div>
