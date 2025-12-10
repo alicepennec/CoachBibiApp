@@ -111,12 +111,12 @@ export function Sidebar() {
                             Profil
                         </Button>
                     </Link>
-                    <Link href="/settings">
+                    {/* <Link href="/settings">
                         <Button variant="ghost" className="w-full justify-start">
                             <Settings className="mr-2 h-4 w-4" />
                             Paramètres
                         </Button>
-                    </Link>
+                    </Link> */}
                     {role === 'coach' && (
                         <Link href="/coach">
                             <Button variant="ghost" className="w-full justify-start text-amber-600 hover:text-amber-700 hover:bg-amber-50">
