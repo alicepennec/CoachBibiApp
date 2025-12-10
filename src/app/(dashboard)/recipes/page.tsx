@@ -47,7 +47,8 @@ export default function RecipesPage() {
         const matchesSearch = recipe.title.toLowerCase().includes(search.toLowerCase()) ||
             recipe.description?.toLowerCase().includes(search.toLowerCase())
 
-        const matchesCategory = category === "all" || recipe.category === category
+        const matchesCategory = category === "all" ||
+            (category === "favorites" ? favorites.has(recipe.id) : recipe.category === category)
 
         let matchesDiet = true
         if (diet === "vegetarian") matchesDiet = recipe.is_vegetarian
@@ -124,6 +125,7 @@ export default function RecipesPage() {
                         <TabsTrigger value="dejeuner">Déjeuner</TabsTrigger>
                         <TabsTrigger value="gouter">Goûter</TabsTrigger>
                         <TabsTrigger value="diner">Dîner</TabsTrigger>
+                        <TabsTrigger value="favorites">Favoris</TabsTrigger>
                     </TabsList>
                 </Tabs>
             </div>
