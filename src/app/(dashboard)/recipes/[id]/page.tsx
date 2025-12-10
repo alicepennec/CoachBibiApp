@@ -8,14 +8,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 import { RecipeActions } from "@/components/features/recipes/recipe-actions"
 
-export default async function RecipeDetailPage({ params }: { params: { id: string } }) {
+export default async function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     const { data: recipe } = await supabase
         .from("recipes")
         .select("*")
-        .eq("id", params.id)
+        .eq("id", id)
         .single()
 
     if (!recipe) {
