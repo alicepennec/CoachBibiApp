@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "@/hooks/use-auth"
 
 interface RecipeCardProps {
@@ -21,6 +21,10 @@ export function RecipeCard({ recipe, isFavorite = false, onToggleFavorite }: Rec
     const supabase = createClient()
     const [loading, setLoading] = useState(false)
     const [favorite, setFavorite] = useState(isFavorite)
+
+    useEffect(() => {
+        setFavorite(isFavorite)
+    }, [isFavorite])
 
     const handleFavorite = async (e: React.MouseEvent) => {
         e.preventDefault()
