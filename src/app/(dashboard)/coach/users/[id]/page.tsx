@@ -17,7 +17,8 @@ import { createClient } from "@/lib/supabase/client"
 import { WeightChart } from "@/components/features/tracking/weight-chart"
 import { SleepChart } from "@/components/features/tracking/sleep-chart"
 
-export default function UserDetailPage({ params }: { params: { id: string } }) {
+export default async function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
     const supabase = createClient()
     const [userProfile, setUserProfile] = useState<any>(null)
     const [loading, setLoading] = useState(true)
@@ -33,7 +34,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
             const { data: profile } = await supabase
                 .from("profiles")
                 .select("*")
-                .eq("id", params.id)
+                .eq("id", id)
                 .single()
 
             if (profile) {
@@ -43,7 +44,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
                 const { data: notes } = await supabase
                     .from("coach_notes")
                     .select("content")
-                    .eq("user_id", params.id)
+                    .eq("user_id", id)
                     .order("created_at", { ascending: false })
                     .limit(1)
                     .single()
@@ -55,7 +56,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
             const { data: weights } = await supabase
                 .from("weight_entries")
                 .select("date, weight_kg")
-                .eq("user_id", params.id)
+                .eq("user_id", id)
                 .order("date", { ascending: true })
 
             if (weights) setWeightData(weights.map(w => ({ date: w.date, weight: w.weight_kg })))
@@ -63,7 +64,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
             const { data: sleep } = await supabase
                 .from("sleep_logs")
                 .select("date, hours_slept")
-                .eq("user_id", params.id)
+                .eq("user_id", id)
                 .order("date", { ascending: true })
 
             if (sleep) setSleepData(sleep.map(s => ({ date: s.date, hours: s.hours_slept })))
@@ -72,7 +73,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
         }
 
         fetchData()
-    }, [params.id])
+    }, [id])
 
     const handleSaveNotes = async () => {
         setSavingNotes(true)
@@ -83,7 +84,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
             const { error } = await supabase
                 .from("coach_notes")
                 .insert({
-                    user_id: params.id,
+                    user_id: id,
                     coach_id: (await supabase.auth.getUser()).data.user?.id,
                     content: coachNotes,
                     is_private: true
