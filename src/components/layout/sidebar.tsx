@@ -60,7 +60,7 @@ export function Sidebar() {
 
     useEffect(() => {
         async function getRole() {
-            if (!user) return
+            if (!user?.id) return
             const { data } = await supabase
                 .from("profiles")
                 .select("role")
