@@ -2,6 +2,9 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { useAuth } from "@/hooks/use-auth"
 import {
     LayoutDashboard,
     LineChart,
@@ -51,6 +54,25 @@ const routes = [
 
 export function Sidebar() {
     const pathname = usePathname()
+    const { user } = useAuth()
+    const [role, setRole] = useState<string | null>(null)
+    const supabase = createClient()
+
+    useEffect(() => {
+        async function getRole() {
+            if (!user) return
+            const { data } = await supabase
+                .from("profiles")
+                .select("role")
+                .eq("id", user.id)
+                .single()
+
+            if (data) {
+                setRole(data.role)
+            }
+        }
+        getRole()
+    }, [user])
 
     return (
         <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50 border-r">
@@ -95,12 +117,14 @@ export function Sidebar() {
                             Paramètres
                         </Button>
                     </Link>
-                    <Link href="/coach">
-                        <Button variant="ghost" className="w-full justify-start text-amber-600 hover:text-amber-700 hover:bg-amber-50">
-                            <Lock className="mr-2 h-4 w-4" />
-                            Espace Coach
-                        </Button>
-                    </Link>
+                    {role === 'coach' && (
+                        <Link href="/coach">
+                            <Button variant="ghost" className="w-full justify-start text-amber-600 hover:text-amber-700 hover:bg-amber-50">
+                                <Lock className="mr-2 h-4 w-4" />
+                                Espace Coach
+                            </Button>
+                        </Link>
+                    )}
                 </nav>
             </div>
         </div>
