@@ -45,7 +45,7 @@ export function WeightTracker() {
     })
 
     const fetchData = async () => {
-        if (!user) return
+        if (!user?.id) return
 
         // Fetch weight entries
         const { data: entries } = await supabase

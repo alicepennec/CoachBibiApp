@@ -43,7 +43,7 @@ export function ProfileForm() {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!user) return
+            if (!user?.id) return
 
             const { data, error } = await supabase
                 .from("profiles")
