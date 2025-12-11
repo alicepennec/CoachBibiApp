@@ -23,18 +23,21 @@ export default function PlaylistsPage() {
                         description="Visualisation de la journée au niveau comportement alimentaire avec incarnation du soi du futur."
                         icon="sun"
                         duration="5-10 min"
+                        audioUrl="/meditation/visualisation-matin.mp3"
                     />
                     <AudioCard
                         title="Visualisation du soir"
                         description="Visualisation des détails de bien-être dans son corps léger."
                         icon="moon"
                         duration="5-10 min"
+                        audioUrl="/meditation/visualisation-soir.mp3"
                     />
                     <AudioCard
                         title="Visualisation d'urgence"
                         description="Je traverse mes envies sans les juger."
                         icon="shield"
                         duration="3-5 min"
+                        audioUrl="/meditation/visualisation-urgence.mp3"
                     />
                 </div>
             </div>
