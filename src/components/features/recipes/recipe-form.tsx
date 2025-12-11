@@ -34,7 +34,7 @@ const recipeSchema = z.object({
     is_quick: z.boolean().default(false),
     ingredients: z.array(z.object({
         name: z.string().min(1),
-        quantity: z.string().min(1),
+        quantity: z.string(),
         unit: z.string().optional()
     })),
     steps: z.array(z.object({
@@ -187,7 +187,43 @@ export function RecipeForm({ recipe, onSaved, onCancel }: RecipeFormProps) {
                             <FormItem>
                                 <FormLabel>URL Image</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://..." {...field} />
+                                    <Input
+                                        placeholder="https://... ou collez une image (Ctrl+V)"
+                                        {...field}
+                                        onPaste={async (e) => {
+                                            const items = e.clipboardData.items
+                                            for (let i = 0; i < items.length; i++) {
+                                                if (items[i].type.indexOf("image") !== -1) {
+                                                    e.preventDefault()
+                                                    const file = items[i].getAsFile()
+                                                    if (!file) return
+
+                                                    const toastId = toast.loading("Téléchargement de l'image...")
+
+                                                    try {
+                                                        const filename = `recipe-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+                                                        const { data, error } = await supabase
+                                                            .storage
+                                                            .from("recipes")
+                                                            .upload(filename, file)
+
+                                                        if (error) throw error
+
+                                                        const { data: { publicUrl } } = supabase
+                                                            .storage
+                                                            .from("recipes")
+                                                            .getPublicUrl(filename)
+
+                                                        field.onChange(publicUrl)
+                                                        toast.success("Image téléchargée !", { id: toastId })
+                                                    } catch (error) {
+                                                        console.error(error)
+                                                        toast.error("Erreur lors du téléchargement", { id: toastId })
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
