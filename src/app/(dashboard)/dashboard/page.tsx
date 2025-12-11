@@ -12,7 +12,7 @@ export default async function DashboardPage() {
         redirect("/login")
     }
 
-    const userName = user.user_metadata.name || "Utilisatrice"
+    const userName = user.user_metadata.name || ""
 
     return (
         <div className="space-y-8">
