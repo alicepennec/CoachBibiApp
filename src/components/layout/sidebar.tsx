@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -78,10 +79,15 @@ export function Sidebar() {
         <div className="space-y-4 py-4 flex flex-col h-full bg-slate-50 border-r">
             <div className="px-3 py-2 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
-                    <div className="relative w-8 h-8 mr-4 bg-primary rounded-lg flex items-center justify-center">
-                        <Trophy className="w-5 h-5 text-white" />
+                    <div className="relative w-16 h-16 mr-3">
+                        <Image
+                            fill
+                            alt="Logo Coach Bibi"
+                            src="/logo.png"
+                            className="object-contain"
+                        />
                     </div>
-                    <h1 className="text-2xl font-bold">
+                    <h1 className="text-xl font-bold text-primary">
                         Coach Bibi
                     </h1>
                 </Link>
