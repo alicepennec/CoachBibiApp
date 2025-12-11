@@ -223,10 +223,14 @@ export function BreathingExercise() {
                         <div className="relative flex items-center justify-center w-64 h-64">
                             {/* Breathing Circle Animation */}
                             <div
-                                className={`absolute rounded-full bg-teal-100 transition-all duration-[5000ms] ease-in-out ${phase === "inhale" ? "w-64 h-64 opacity-100" : "w-24 h-24 opacity-60"
+                                className={`absolute rounded-full transition-all duration-[5000ms] ease-in-out w-64 h-64 ${phase === "inhale"
+                                        ? "scale-100 opacity-100 bg-teal-100"
+                                        : "scale-50 opacity-60 bg-blue-100"
                                     }`}
+                                style={{ willChange: "transform, background-color" }}
                             />
-                            <div className="z-10 text-2xl font-bold text-teal-800 uppercase tracking-widest">
+                            <div className={`z-10 text-2xl font-bold uppercase tracking-widest transition-colors duration-[5000ms] ${phase === "inhale" ? "text-teal-800" : "text-blue-800"
+                                }`}>
                                 {phase === "inhale" ? "Inspirez" : "Expirez"}
                             </div>
                         </div>
