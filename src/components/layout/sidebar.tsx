@@ -88,7 +88,7 @@ export function Sidebar() {
                         />
                     </div>
                     <h1 className="text-xl font-bold text-primary">
-                        Coach Bibi
+                        Coach My Silhouette
                     </h1>
                 </Link>
                 <div className="space-y-1">
