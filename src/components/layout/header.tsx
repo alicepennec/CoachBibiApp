@@ -15,12 +15,20 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useAuth } from "@/hooks/use-auth"
 import { createClient } from "@/lib/supabase/client"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
 
 export function Header() {
     const { user } = useAuth()
     const router = useRouter()
     const supabase = createClient()
+
+    const [isOpen, setIsOpen] = useState(false)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        setIsOpen(false)
+    }, [pathname])
 
     const handleSignOut = async () => {
         await supabase.auth.signOut()
@@ -29,7 +37,7 @@ export function Header() {
 
     return (
         <div className="flex items-center p-4 border-b h-16 bg-white">
-            <Sheet>
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                     <Button variant="ghost" size="icon" className="md:hidden">
                         <Menu />
