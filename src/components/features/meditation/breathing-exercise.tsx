@@ -70,7 +70,7 @@ export function BreathingExercise() {
             }, 1000)
 
             // Breathing cycle logic (5s inhale, 5s exhale)
-            const cycleDuration = 1000 // 5 seconds
+            const cycleDuration = 5000 // 5 seconds
 
             const runCycle = () => {
                 setPhase((prev) => {
