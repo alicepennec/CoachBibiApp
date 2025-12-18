@@ -22,7 +22,7 @@ export function AudioCard({ title, description, icon, duration, audioUrl }: Audi
     const color = icon === "sun" ? "text-amber-500" : icon === "moon" ? "text-indigo-500" : "text-red-500"
     const bgColor = icon === "sun" ? "bg-amber-100" : icon === "moon" ? "bg-indigo-100" : "bg-red-100"
 
-    const handlePlay = () => {
+    const handlePlay = async () => {
         if (!audioUrl) {
             toast.info("Lecture audio bientôt disponible", {
                 description: "Les fichiers audio seront intégrés prochainement."
@@ -30,13 +30,28 @@ export function AudioCard({ title, description, icon, duration, audioUrl }: Audi
             return
         }
 
-        if (isPlaying) {
-            audioRef.current?.pause()
+        try {
+            if (isPlaying) {
+                audioRef.current?.pause()
+                setIsPlaying(false)
+            } else {
+                await audioRef.current?.play()
+                setIsPlaying(true)
+            }
+        } catch (error) {
+            console.error("Audio playback error:", error)
+            toast.error("Erreur de lecture", {
+                description: "Impossible de lire le fichier audio. Vérifiez votre connexion ou le format du fichier."
+            })
             setIsPlaying(false)
-        } else {
-            audioRef.current?.play()
-            setIsPlaying(true)
         }
+    }
+
+    const handleError = () => {
+        setIsPlaying(false)
+        toast.error("Fichier audio inaccessible", {
+            description: "Le fichier audio demandé est introuvable ou corrompu."
+        })
     }
 
     const handleEnded = () => {
@@ -70,6 +85,7 @@ export function AudioCard({ title, description, icon, duration, audioUrl }: Audi
                             ref={audioRef}
                             src={audioUrl}
                             onEnded={handleEnded}
+                            onError={handleError}
                             className="hidden"
                         />
                     )}
