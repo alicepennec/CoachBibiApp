@@ -91,7 +91,7 @@ export default function RecipesPage() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
-                    <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+                    <div className="flex flex-wrap gap-2 pb-2 md:pb-0">
                         <Button
                             variant={diet === "all" ? "default" : "outline"}
                             onClick={() => setDiet("all")}
@@ -131,7 +131,7 @@ export default function RecipesPage() {
                 </div>
 
                 <Tabs defaultValue="all" onValueChange={setCategory}>
-                    <TabsList>
+                    <TabsList className="flex-wrap h-auto">
                         <TabsTrigger value="all">Toutes</TabsTrigger>
                         <TabsTrigger value="petit-dejeuner">Petit-déjeuner</TabsTrigger>
                         <TabsTrigger value="dejeuner">Déjeuner</TabsTrigger>
