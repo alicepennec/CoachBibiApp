@@ -19,8 +19,8 @@ export function BreathingExercise() {
 
     const [isActive, setIsActive] = useState(false)
     const [isPaused, setIsPaused] = useState(false)
-    const [duration, setDuration] = useState(5) // minutes
-    const [timeLeft, setTimeLeft] = useState(5 * 60)
+    const [duration, setDuration] = useState(1) // minutes
+    const [timeLeft, setTimeLeft] = useState(1 * 60)
     const [phase, setPhase] = useState<"inhale" | "exhale">("inhale")
     const [soundEnabled, setSoundEnabled] = useState(false)
     const [showBenevolentThought, setShowBenevolentThought] = useState(false)
@@ -70,7 +70,7 @@ export function BreathingExercise() {
             }, 1000)
 
             // Breathing cycle logic (5s inhale, 5s exhale)
-            const cycleDuration = 5000 // 5 seconds
+            const cycleDuration = 1000 // 5 seconds
 
             const runCycle = () => {
                 setPhase((prev) => {
@@ -165,16 +165,16 @@ export function BreathingExercise() {
                                 className="flex space-x-4"
                             >
                                 <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="1" id="r1" />
+                                    <Label htmlFor="r1">1 min</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="3" id="r3" />
                                     <Label htmlFor="r3">3 min</Label>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="5" id="r5" />
                                     <Label htmlFor="r5">5 min</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="10" id="r10" />
-                                    <Label htmlFor="r10">10 min</Label>
                                 </div>
                             </RadioGroup>
                         </div>
@@ -224,8 +224,8 @@ export function BreathingExercise() {
                             {/* Breathing Circle Animation */}
                             <div
                                 className={`absolute rounded-full transition-all duration-[5000ms] ease-in-out w-64 h-64 ${phase === "inhale"
-                                        ? "scale-100 opacity-100 bg-teal-100"
-                                        : "scale-50 opacity-60 bg-blue-100"
+                                    ? "scale-100 opacity-100 bg-teal-100"
+                                    : "scale-50 opacity-60 bg-blue-100"
                                     }`}
                                 style={{ willChange: "transform, background-color" }}
                             />
